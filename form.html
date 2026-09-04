@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>Create Character</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    nav { margin-bottom: 1.5rem; }
+    nav a { color: #3b82f6; text-decoration: none; }
+    form {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    label { font-size: 0.9rem; color: #aaa; }
+    input, select, textarea {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #fff;
+      padding: 0.55rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 50px;
+      color: #bbb;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background: #2563eb; }
+
+    /* 2 Columns x 3 Rows Grid for Form Dropdowns */
+    .stats-grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .stat-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .stat-field label {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    /* Class & Skill Picker Containers */
+    .card-picker-container {
+      background: #252525;
+      border: 1px solid #3a3a3a;
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .skill-add-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .skill-add-row select { flex: 1; }
+    .btn-secondary {
+      background: #374151;
+      padding: 0.55rem 1rem;
+      font-size: 0.9rem;
+    }
+    .btn-secondary:hover { background: #4b5563; }
+    .btn-secondary:disabled {
+      background: #2a2a2a;
+      color: #666;
+      cursor: not-allowed;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    .skill-tag {
+      background: #1e1e1e;
+      border: 1px solid #3b82f6;
+      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .skill-tag-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .skill-tag-name {
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+    .skill-tag-desc {
+      color: #888;
+      font-size: 0.8rem;
+    }
+    .btn-remove {
+      background: transparent;
+      color: #ef4444;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0 0.25rem;
+      line-height: 1;
+    }
+    .btn-remove:hover { color: #f87171; background: transparent; }
+    .status-msg { color: #10b981; text-align: center; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">&larr; Back to Roster</a>
+  </nav>
+
+  <form id="offlineForm">
+    <h2>New Character</h2>
+
+    <label for="username">Character Name</label>
+    <input type="text" id="username" required placeholder="Enter name...">
+
+    <!-- Character Class Selection -->
+    <label for="characterClass">Character Class</label>
+    <div class="card-picker-container">
+      <select id="characterClass" required>
+        <option value="">-- Loading Classes... --</option>
+      </select>
+      <p id="classDescription" readonly placeholder="Select a class to preview description and roll bonuses..."></p>
+    </div>
+
+    <!-- Stats Grid -->
+    <label>Stat Assignments</label>
+    <div class="stats-grid-container">
+      <div class="stat-field">
+        <label for="rank1">Brain</label>
+        <select id="rank1" class="rank-select" required>
+          <option value="">-- Die --</option>
+          <option value="4">d4</option>
+          <option value="6">d6</option>
+          <option value="8">d8</option>
+          <option value="10">d10</option>
+          <option value="12">d12</option>
+          <option value="20">d20</option>
+        </select>
+      </div>
+
+      <div class="stat-field">
+        <label for="rank2">Brawn</label>
+        <select id="rank2" class="rank-select" required>
+          <option value="">-- Die --</option>
+          <option value="4">d4</option>
+          <option value="6">d6</option>
+          <option value="8">d8</option>
+          <option value="10">d10</option>
+          <option value="12">d12</option>
+          <option value="20">d20</option>
+        </select>
+      </div>
+
+      <div class="stat-field">
+        <label for="rank3">Fight</label>
+        <select id="rank3" class="rank-select" required>
+          <option value="">-- Die --</option>
+          <option value="4">d4</option>
+          <option value="6">d6</option>
+          <option value="8">d8</option>
+          <option value="10">d10</option>
+          <option value="12">d12</option>
+          <option value="20">d20</option>
+        </select>
+      </div>
+
+      <div class="stat-field">
+        <label for="rank4">Flight</label>
+        <select id="rank4" class="rank-select" required>
+          <option value="">-- Die --</option>
+          <option value="4">d4</option>
+          <option value="6">d6</option>
+          <option value="8">d8</option>
+          <option value="10">d10</option>
+          <option value="12">d12</option>
+          <option value="20">d20</option>
+        </select>
+      </div>
+
+      <div class="stat-field">
+        <label for="rank5">Grit</label>
+        <select id="rank5" class="rank-select" required>
+          <option value="">-- Die --</option>
+          <option value="4">d4</option>
+          <option value="6">d6</option>
+          <option value="8">d8</option>
+          <option value="10">d10</option>
+          <option value="12">d12</option>
+          <option value="20">d20</option>
+        </select>
+      </div>
+
+      <div class="stat-field">
+        <label for="rank6">Charm</label>
+        <select id="rank6" class="rank-select" required>
+          <option value="">-- Die --</option>
+          <option value="4">d4</option>
+          <option value="6">d6</option>
+          <option value="8">d8</option>
+          <option value="10">d10</option>
+          <option value="12">d12</option>
+          <option value="20">d20</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Skills Section -->
+    <label>Character Skills</label>
+    <div class="card-picker-container">
+      <div class="skill-add-row">
+        <select id="characterSkill">
+          <option value="">-- Loading Skills... --</option>
+        </select>
+        <button type="button" id="addSkillBtn" class="btn-secondary" disabled>+ Add Skill</button>
+      </div>
+
+      <textarea id="skillDescription" readonly placeholder="Select a skill above to preview its description..."></textarea>
+      
+      <div id="selectedSkillsList" class="skills-list"></div>
+    </div>
+
+    <button type="submit">Save Character</button>
+    <div id="status" class="status-msg"></div>
+  </form>
+
+  <script src="form.js"></script>
+</body>
+</html>

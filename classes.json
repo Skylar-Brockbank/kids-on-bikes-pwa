@@ -1,0 +1,38 @@
+[
+  {
+    "id": "brute",
+    "name": "Brute",
+    "description": "A frontline powerhouse who relies on raw physical strength and endurance.",
+    "bonuses": {
+      "brawn": 2,
+      "fight": 1
+    }
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "description": "Quick-footed and observant, adept at evading traps and striking from afar.",
+    "bonuses": {
+      "flight": 2,
+      "brain": 1
+    }
+  },
+  {
+    "id": "diplomat",
+    "name": "Diplomat",
+    "description": "A silver-tongued negotiator capable of talking their way through tough spots.",
+    "bonuses": {
+      "charm": 2,
+      "grit": 1
+    }
+  },
+  {
+    "id": "scholar",
+    "name": "Scholar",
+    "description": "Master of ancient knowledge and quick analysis in times of crisis.",
+    "bonuses": {
+      "brain": 2,
+      "charm": 1
+    }
+  }
+]

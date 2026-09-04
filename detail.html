@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>Character Details</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    nav { margin-bottom: 1.5rem; }
+    nav a { color: #3b82f6; text-decoration: none; }
+
+    .profile-card {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .profile-header {
+      border-bottom: 1px solid #333;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+    .profile-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .profile-header h2 {
+      margin: 0;
+      color: #fff;
+      font-size: 1.75rem;
+    }
+    .class-badge {
+      background: #1e3a8a;
+      color: #93c5fd;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Adversity Tokens */
+    .token-tracker {
+      background: #252525;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .token-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e0e0e0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .token-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .token-btn {
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 1;
+      user-select: none;
+      transition: background-color 0.15s, transform 0.05s;
+    }
+    .token-btn:hover:not(:disabled) { background: #2563eb; }
+    .token-btn:active:not(:disabled) { transform: scale(0.92); }
+    .token-btn:disabled { background: #444; color: #777; cursor: not-allowed; }
+    .token-count {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #f59e0b;
+      min-width: 2rem;
+      text-align: center;
+    }
+
+    /* Roll Banner & Dice */
+    .roll-banner {
+      background: #2a2a2a;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      min-height: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .roll-banner .roll-stat {
+      color: #888;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .roll-banner .roll-result {
+      color: #10b981;
+      font-size: 2.25rem;
+      font-weight: bold;
+      line-height: 1.1;
+      margin-top: 0.25rem;
+    }
+    .roll-banner .roll-result.crit-max { color: #f59e0b; }
+    .roll-banner .roll-result.crit-exploded { color: #34d399; }
+    .roll-banner .roll-result.crit-min { color: #ef4444; }
+
+    /* Stats Grid */
+    .stats-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .stat-btn {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 6px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      color: inherit;
+      position: relative;
+      transition: background-color 0.15s, transform 0.05s, border-color 0.15s;
+      user-select: none;
+    }
+    .stat-btn:hover {
+      background: #333333;
+      border-color: #3b82f6;
+    }
+    .stat-btn:active {
+      transform: scale(0.97);
+      background: #3b82f6;
+    }
+    @keyframes explodePulse {
+      0% { transform: scale(1); box-shadow: 0 0 0px #f59e0b; }
+      50% { transform: scale(1.03); box-shadow: 0 0 12px #f59e0b; }
+      100% { transform: scale(1); box-shadow: 0 0 0px #f59e0b; }
+    }
+    .stat-btn.active-exploding {
+      border-color: #f59e0b;
+      background-color: #382c16;
+      animation: explodePulse 1.2s infinite ease-in-out;
+    }
+    .stat-title {
+      color: #888;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+      pointer-events: none;
+    }
+    .stat-value {
+      color: #3b82f6;
+      font-size: 1.5rem;
+      font-weight: bold;
+      pointer-events: none;
+    }
+    .stat-bonus-tag {
+      font-size: 0.75rem;
+      color: #10b981;
+      font-weight: bold;
+      margin-left: 0.25rem;
+    }
+
+    /* Skills Section Spacing */
+    .skills-section {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .skill-card {
+      background: #252525;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .skill-title {
+      color: #3b82f6;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+      font-weight: bold;
+    }
+    .skill-name {
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin-bottom: 0.35rem;
+    }
+    .skill-description {
+      color: #bbb;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .error-state { color: #ef4444; text-align: center; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">&larr; Back to Roster</a>
+  </nav>
+
+  <div id="detailContainer"></div>
+
+  <script src="detail.js"></script>
+</body>
+</html>
