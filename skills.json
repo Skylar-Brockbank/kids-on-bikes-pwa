@@ -83,5 +83,10 @@
     "id": "swordsman",
     "name": "Swordsman",
     "description": "+3 to attacks made with a bladed weapon"
+  },
+  {
+    "id": "tough",
+    "name": "Tough",
+    "description": "When your defensive grit check fails, lower the severity by up to 3 (severity cannot drop below 1)"
   }
 ]
