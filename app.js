@@ -193,3 +193,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js');
   });
 }
+window.addEventListener('online', () => {
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'REFRESH_CACHE' });
+  }
+});
