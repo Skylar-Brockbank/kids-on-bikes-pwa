@@ -135,6 +135,8 @@
     }
     .btn-remove:hover { color: #f87171; background: transparent; }
     .status-msg { color: #10b981; text-align: center; font-weight: bold; }
+    .btn-import { background: #374151; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; height:fit-content;}
+    .top-bar {display:flex; justify-content: space-between; align-content: baseline;}
   </style>
 </head>
 <body>
@@ -144,11 +146,13 @@
   </nav>
 
   <form id="offlineForm">
-    <h2>New Character</h2>
-    <input type="file" id="jsonFileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)" />
-    <button type="button" class="btn-import" onclick="document.getElementById('jsonFileInput').click()">
-      📥 Import JSON
-    </button>
+    <div class="top-bar">
+      <h2>New Character</h2>
+      <input type="file" id="jsonFileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)" />
+      <button type="button" class="btn-import" onclick="document.getElementById('jsonFileInput').click()">
+        Import
+      </button>
+    </div>
     <label for="username">Character Name</label>
     <input type="text" id="username" required placeholder="Enter name...">
 
