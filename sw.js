@@ -1,4 +1,4 @@
-const CACHE_NAME = 'roster-v4';
+const CACHE_NAME = 'roster-v6';
 
 const ASSETS = [
   './',
@@ -15,16 +15,40 @@ const ASSETS = [
   './manifest.json'
 ];
 
-// Helper to refresh all pre-cached files from network when online
-async function updateCachedAssets() {
-  try {
-    const cache = await caches.open(CACHE_NAME);
-    await cache.addAll(ASSETS);
-    console.log('[SW] Successfully updated local files from network.');
-  } catch (err) {
-    console.warn('[SW] Could not update cached files:', err);
-  }
+// Force fetch from server network (bypassing HTTP disk cache) and update Cache Storage
+async function forceUpdateCache() {
+  const cache = await caches.open(CACHE_NAME);
+  
+  // Create request objects with cache: 'reload'
+  const updatePromises = ASSETS.map(async (url) => {
+    const req = new Request(url, { cache: 'reload' });
+    const res = await fetch(req);
+    if (res && res.status === 200) {
+      await cache.put(url, res);
+    }
+  });
+
+  await Promise.all(updatePromises);
 }
+
+// Service worker message listener
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'FORCE_UPDATE_CACHE') {
+    event.waitUntil(
+      forceUpdateCache()
+        .then(() => {
+          // Notify the client that update was successful
+          event.ports[0].postMessage({ status: 'SUCCESS' });
+        })
+        .catch((err) => {
+          event.ports[0].postMessage({ status: 'ERROR', error: err.message });
+        })
+    );
+  }
+});
+
+// (Keep install, activate, and fetch event listeners as previously configured)
+
 
 // Install: Initial pre-cache
 self.addEventListener('install', (event) => {
@@ -86,11 +110,4 @@ self.addEventListener('fetch', (event) => {
       return cachedResponse || fetchPromise;
     })
   );
-});
-
-// Listen for explicit message events (e.g. triggered when app regains connectivity)
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'REFRESH_CACHE') {
-    event.waitUntil(updateCachedAssets());
-  }
 });

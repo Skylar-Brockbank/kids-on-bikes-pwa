@@ -161,6 +161,37 @@
       line-height: 1;
     }
     .empty-state { text-align: center; color: #666; margin-top: 3rem; }
+    .update-container {
+    display: flex;
+    position:absolute;
+    bottom: 1em;
+    right: 1em;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  .btn-update {
+    background: #252525;
+    color: #e0e0e0;
+    border: 1px solid #3b82f6;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+  }
+  .btn-update:hover {
+    background: #1e3a8a;
+  }
+  .btn-update:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .update-status {
+    font-size: 0.85rem;
+    color: #10b981;
+  }
   </style>
 </head>
 <body>
@@ -241,6 +272,12 @@
     </div>
   </div>
 
+  <div class="update-container">
+  <button id="btnCheckUpdate" class="btn-update" onclick="checkForUpdates()">
+    🔄
+  </button>
+  <span id="updateStatus" class="update-status"></span>
+</div>
   <script src="app.js"></script>
 </body>
 </html>
