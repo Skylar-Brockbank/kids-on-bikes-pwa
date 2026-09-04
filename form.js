@@ -162,7 +162,7 @@ function handleFormSubmit(event) {
   localStorage.setItem('pwa_characters', JSON.stringify(existingCharacters));
 
   statusDiv.textContent = 'Character saved locally!';
-  
+  window.location.href = 'index';
   document.getElementById('offlineForm').reset();
   selectedSkills = [];
   renderSelectedSkills();
