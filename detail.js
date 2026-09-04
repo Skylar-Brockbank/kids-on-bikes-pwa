@@ -1,11 +1,12 @@
 let currentRollState = null;
 let currentCharacter = null;
+let loadedStatuses = [];
 
 window.addEventListener('DOMContentLoaded', () => {
   renderCharacterDetail();
 });
 
-function renderCharacterDetail() {
+async function renderCharacterDetail() {
   const container = document.getElementById('detailContainer');
   
   const storedId = localStorage.getItem('selectedCharacterId');
@@ -14,6 +15,16 @@ function renderCharacterDetail() {
   if (!charId) {
     container.innerHTML = '<p class="error-state">No character selected.</p>';
     return;
+  }
+
+  // Fetch status options from statuses.json
+  try {
+    const statusRes = await fetch('./statuses.json').catch(() => null);
+    if (statusRes && statusRes.ok) {
+      loadedStatuses = await statusRes.json();
+    }
+  } catch (err) {
+    console.error('Failed to load statuses.json', err);
   }
 
   const characters = JSON.parse(localStorage.getItem('pwa_characters') || '[]');
@@ -32,6 +43,11 @@ function renderCharacterDetail() {
     currentCharacter.notes = '';
   }
 
+  if (!currentCharacter.status && loadedStatuses.length > 0) {
+    currentCharacter.status = loadedStatuses[0].id;
+  }
+
+  const activeStatusObj = getStatusObject(currentCharacter.status);
   const bonuses = (currentCharacter.class && currentCharacter.class.bonuses) ? currentCharacter.class.bonuses : {};
 
   container.innerHTML = `
@@ -42,6 +58,17 @@ function renderCharacterDetail() {
           ${currentCharacter.class ? `<span class="class-badge">${escapeHtml(currentCharacter.class.name)}</span>` : ''}
         </div>
       </div>
+
+      <!-- Interactive Health Status Card Button -->
+      <button class="status-card-btn" onclick="openStatusModal()">
+        <div class="status-card-header">
+          <span class="status-card-label">Health Status</span>
+          <span id="statusCardValue" class="status-card-value">${escapeHtml(activeStatusObj ? activeStatusObj.label : 'Select Status')} &rsaquo;</span>
+        </div>
+        <div id="statusCardDesc" class="status-card-desc">
+          ${escapeHtml(activeStatusObj ? activeStatusObj.description : 'Tap to change status condition.')}
+        </div>
+      </button>
 
       <!-- Adversity Tokens Tracker -->
       <div class="token-tracker">
@@ -103,6 +130,65 @@ function renderCharacterDetail() {
   updateTokenButtonState();
 }
 
+function getStatusObject(statusId) {
+  return loadedStatuses.find(s => s.id === statusId) || null;
+}
+
+/* Modal Functions */
+function openStatusModal() {
+  const modalList = document.getElementById('statusModalList');
+  if (!modalList) return;
+
+  modalList.innerHTML = loadedStatuses.map(status => `
+    <div class="status-option-item ${currentCharacter && currentCharacter.status === status.id ? 'selected' : ''}" 
+         onclick="selectStatusFromModal('${status.id}')">
+      <div class="status-option-header">
+        <span class="status-option-title">${escapeHtml(status.label)}</span>
+        ${currentCharacter && currentCharacter.status === status.id ? '<span style="color:#60a5fa; font-weight:bold;">✓ Active</span>' : ''}
+      </div>
+      <div class="status-option-desc">${escapeHtml(status.description)}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('statusModal').classList.add('active');
+}
+
+function closeStatusModal() {
+  document.getElementById('statusModal').classList.remove('active');
+}
+
+function closeStatusModalOnOverlay(event) {
+  if (event.target.id === 'statusModal') {
+    closeStatusModal();
+  }
+}
+
+function selectStatusFromModal(newStatusId) {
+  if (!currentCharacter) return;
+
+  currentCharacter.status = newStatusId;
+
+  // Persist update in localStorage
+  const characters = JSON.parse(localStorage.getItem('pwa_characters') || '[]');
+  const index = characters.findIndex(c => c.id === currentCharacter.id);
+  if (index !== -1) {
+    characters[index].status = newStatusId;
+    localStorage.setItem('pwa_characters', JSON.stringify(characters));
+  }
+
+  // Update card UI on character page
+  const selectedObj = getStatusObject(newStatusId);
+  if (selectedObj) {
+    const valEl = document.getElementById('statusCardValue');
+    const descEl = document.getElementById('statusCardDesc');
+
+    if (valEl) valEl.innerHTML = `${escapeHtml(selectedObj.label)} &rsaquo;`;
+    if (descEl) descEl.textContent = selectedObj.description;
+  }
+
+  closeStatusModal();
+}
+
 function renderStatButton(statName, diceSides, bonusVal) {
   const bonus = bonusVal ? Number(bonusVal) : 0;
   const bonusLabel = bonus > 0 ? `<span class="stat-bonus-tag">(+${bonus})</span>` : '';
@@ -154,7 +240,6 @@ function saveNotes() {
     localStorage.setItem('pwa_characters', JSON.stringify(characters));
   }
 
-  // Show "Saved!" confirmation briefly
   const statusEl = document.getElementById('notesStatus');
   if (statusEl) {
     statusEl.classList.add('visible');

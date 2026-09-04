@@ -2,6 +2,8 @@ let loadedClasses = [];
 let loadedSkills = [];
 let editingModalSkills = [];
 
+let editingCharacterId
+
 window.addEventListener('DOMContentLoaded', () => {
   loadDataAndRender();
 });
@@ -69,6 +71,8 @@ function openEditModal(id) {
   const characters = JSON.parse(localStorage.getItem('pwa_characters') || '[]');
   const char = characters.find(c => c.id === id);
   if (!char) return;
+
+  editingCharacterId=id
 
   document.getElementById('editCharId').value = char.id;
   document.getElementById('editName').value = char.name;
@@ -179,6 +183,7 @@ function setupModalListeners() {
 
 function closeEditModal() {
   document.getElementById('editModal').classList.add('hidden');
+  editingCharacterId=null
 }
 
 function escapeHtml(str) {
@@ -250,9 +255,32 @@ async function checkForUpdates() {
     }
   };
 
+  
   // Send message to Service Worker
   navigator.serviceWorker.controller.postMessage(
     { type: 'FORCE_UPDATE_CACHE' },
     [messageChannel.port2]
   );
+}
+function exportCurrentCharacterJSON() {
+if (!editingCharacterId) return;
+
+const characters = JSON.parse(localStorage.getItem('pwa_characters') || '[]');
+const char = characters.find(c => c.id === editingCharacterId);
+if (!char) return;
+
+const jsonString = JSON.stringify(char, null, 2);
+const blob = new Blob([jsonString], { type: 'application/json' });
+const url = URL.createObjectURL(blob);
+
+const safeFilename = char.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+const a = document.createElement('a');
+a.href = url;
+a.download = `${safeFilename}_character.json`;
+document.body.appendChild(a);
+a.click();
+
+// Cleanup URL object
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
 }

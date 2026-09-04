@@ -204,6 +204,34 @@ window.addEventListener('DOMContentLoaded', () => {
   loadSkillOptions();
 });
 
+function handleFileImport(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      console.log(data)
+      if (!data.name || !data.stats) {
+        alert('Invalid character JSON format.');
+        return;
+      }
+      console.log("data contains name and stats")
+      data.id=Date.now();
+      const existingCharacters = JSON.parse(localStorage.getItem('pwa_characters') || '[]');
+      existingCharacters.push(data);
+      localStorage.setItem('pwa_characters', JSON.stringify(existingCharacters));
+      window.location.href = 'index';
+    } catch (err) {
+      alert('Error parsing JSON file. Please ensure it is a valid character export.');
+      console.error(err);
+    }
+  };
+
+  reader.readAsText(file);
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js');

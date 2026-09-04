@@ -1,4 +1,4 @@
-const CACHE_NAME = 'roster-v6';
+const CACHE_NAME = 'roster-v7';
 
 const ASSETS = [
   './',
@@ -12,6 +12,7 @@ const ASSETS = [
   './form.js',
   './classes.json',
   './skills.json',
+  './statuses.json',
   './manifest.json'
 ];
 

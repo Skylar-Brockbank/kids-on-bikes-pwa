@@ -145,7 +145,10 @@
 
   <form id="offlineForm">
     <h2>New Character</h2>
-
+    <input type="file" id="jsonFileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)" />
+    <button type="button" class="btn-import" onclick="document.getElementById('jsonFileInput').click()">
+      📥 Import JSON
+    </button>
     <label for="username">Character Name</label>
     <input type="text" id="username" required placeholder="Enter name...">
 

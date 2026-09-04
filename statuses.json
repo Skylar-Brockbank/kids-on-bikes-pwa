@@ -1,0 +1,32 @@
+[
+  {
+    "id": "healthy",
+    "label": "Healthy / Uninjured",
+    "description": "Character is at full strength."
+  },
+  {
+    "id": "hurt",
+    "label": "Hurt",
+    "description": "A few scuffs and scratches, but nothing that would require medical attention."
+  },
+  {
+    "id": "minor-injury",
+    "label": "Minor Injury",
+    "description": "Moderate physical harm. Recovery will be slow without medical attention."
+  },
+  {
+    "id": "major-injury",
+    "label": "Major Injury",
+    "description": "Significant physical harm. Requires medical attention to recover."
+  },
+  {
+    "id": "incapacitated",
+    "label": "Incapacitated",
+    "description": "Unable to act or take physical actions without assistance."
+  },
+  {
+    "id": "dead",
+    "label": "Dead",
+    "description": "He's Dead Jim"
+  }
+]
