@@ -88,5 +88,10 @@
     "id": "tough",
     "name": "Tough",
     "description": "When your defensive grit check fails, lower the severity by up to 3 (severity cannot drop below 1)"
+  },
+  {
+    "id": "protective",
+    "name": "Tough",
+    "description": "+3 to grit when defending an ally"
   }
 ]
