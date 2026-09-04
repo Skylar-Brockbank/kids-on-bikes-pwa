@@ -1,31 +1,5 @@
 [
   {
-    "id": "stealth",
-    "name": "Stealth & Shadow",
-    "description": "Excellence in moving silently, hiding in darkness, and avoiding unwanted detection."
-  },
-  {
-    "id": "first_aid",
-    "name": "First Aid & Triage",
-    "description": "Knowledge of field medicine to bind wounds, stabilize injuries, and treat basic ailments."
-  },
-  {
-    "id": "tinkering",
-    "name": "Mechanics & Tinkering",
-    "description": "Ability to disable locks, repair mechanical contraptions, and assemble jury-rigged tools."
-  },
-  {
-    "id": "lore",
-    "name": "Ancient Lore",
-    "description": "Deep understanding of forgotten histories, arcane runes, and mythic monsters."
-  },
-  {
-    "id": "survival",
-    "name": "Wilderness Survival",
-    "description": "Proficiency in tracking beasts, foraging edible flora, and constructing temporary shelters."
-  },
-
-  {
     "id": "battle-mage",
     "name": "Battle Mage",
     "description": "Get a +3 to any spell cast with Fight stat"
@@ -94,5 +68,20 @@
     "id": "wild-speak",
     "name": "Wild Speak",
     "description": "You can communicate with any animal whose species you have knowledge of."
+  },
+  {
+    "id": "marksman",
+    "name": "Marksman",
+    "description": "+3 to attacks made with a ranged weapon"
+  },
+  {
+    "id": "pugilist",
+    "name": "Pugilist",
+    "description": "+3 to melee attacks made without a weapon"
+  },
+  {
+    "id": "swordsman",
+    "name": "Swordsman",
+    "description": "+3 to attacks made with a bladed weapon"
   }
 ]
