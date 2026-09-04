@@ -28,6 +28,10 @@ function renderCharacterDetail() {
     currentCharacter.adversityTokens = 0;
   }
 
+  if (typeof currentCharacter.notes !== 'string') {
+    currentCharacter.notes = '';
+  }
+
   const bonuses = (currentCharacter.class && currentCharacter.class.bonuses) ? currentCharacter.class.bonuses : {};
 
   container.innerHTML = `
@@ -65,18 +69,34 @@ function renderCharacterDetail() {
         ${renderStatButton('Charm', currentCharacter.stats.charm, bonuses.charm)}
       </div>
 
-      <!-- Skills Cards Section -->
-      ${(currentCharacter.skills && currentCharacter.skills.length > 0) ? `
-        <div class="skills-section">
-          ${currentCharacter.skills.map(skill => `
-            <div class="skill-card">
-              <div class="skill-title">Special Skill</div>
-              <div class="skill-name">${escapeHtml(skill.name)}</div>
-              <div class="skill-description">${escapeHtml(skill.description)}</div>
-            </div>
-          `).join('')}
+      <!-- Class & Skills Information Cards -->
+      <div class="skills-section">
+        ${currentCharacter.class && currentCharacter.class.description ? `
+          <div class="skill-card">
+            <div class="skill-title">Class Description</div>
+            <div class="skill-name">${escapeHtml(currentCharacter.class.name)}</div>
+            <div class="skill-description">${escapeHtml(currentCharacter.class.description)}</div>
+          </div>
+        ` : ''}
+
+        ${(currentCharacter.skills && currentCharacter.skills.length > 0) ? currentCharacter.skills.map(skill => `
+          <div class="skill-card">
+            <div class="skill-title">Special Skill</div>
+            <div class="skill-name">${escapeHtml(skill.name)}</div>
+            <div class="skill-description">${escapeHtml(skill.description)}</div>
+          </div>
+        `).join('') : ''}
+      </div>
+
+      <!-- Character Notes Section -->
+      <div class="notes-section">
+        <div class="notes-header">
+          <span class="notes-title">Character Notes</span>
+          <span id="notesStatus" class="notes-status">Saved!</span>
         </div>
-      ` : ''}
+        <textarea id="characterNotes" class="notes-textarea" placeholder="Write character notes, inventory, or story details here...">${escapeHtml(currentCharacter.notes)}</textarea>
+        <button type="button" class="btn-save-notes" onclick="saveNotes()">Save Notes</button>
+      </div>
     </div>
   `;
 
@@ -116,6 +136,31 @@ function updateTokenButtonState() {
   const subBtn = document.getElementById('subTokenBtn');
   if (subBtn && currentCharacter) {
     subBtn.disabled = currentCharacter.adversityTokens <= 0;
+  }
+}
+
+function saveNotes() {
+  if (!currentCharacter) return;
+
+  const textarea = document.getElementById('characterNotes');
+  const notesContent = textarea ? textarea.value : '';
+
+  currentCharacter.notes = notesContent;
+
+  const characters = JSON.parse(localStorage.getItem('pwa_characters') || '[]');
+  const index = characters.findIndex(c => c.id === currentCharacter.id);
+  if (index !== -1) {
+    characters[index].notes = notesContent;
+    localStorage.setItem('pwa_characters', JSON.stringify(characters));
+  }
+
+  // Show "Saved!" confirmation briefly
+  const statusEl = document.getElementById('notesStatus');
+  if (statusEl) {
+    statusEl.classList.add('visible');
+    setTimeout(() => {
+      statusEl.classList.remove('visible');
+    }, 2000);
   }
 }
 
