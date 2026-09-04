@@ -93,5 +93,10 @@
     "id": "protective",
     "name": "Protective",
     "description": "+3 to grit when defending an ally"
+  },
+  {
+    "id": "evasion",
+    "name": "Evasion",
+    "description": "+2 to flight when trying to dodge an attack"
   }
 ]
