@@ -198,3 +198,61 @@ window.addEventListener('online', () => {
     navigator.serviceWorker.controller.postMessage({ type: 'REFRESH_CACHE' });
   }
 });
+
+async function checkForUpdates() {
+  const btn = document.getElementById('btnCheckUpdate');
+  const statusEl = document.getElementById('updateStatus');
+
+  if (!navigator.onLine) {
+    if (statusEl) {
+      statusEl.style.color = '#ef4444';
+      statusEl.textContent = 'You are offline. Connect to the internet to check for updates.';
+    }
+    return;
+  }
+
+  if (!navigator.serviceWorker || !navigator.serviceWorker.controller) {
+    if (statusEl) {
+      statusEl.style.color = '#f59e0b';
+      statusEl.textContent = 'Service worker not ready.';
+    }
+    return;
+  }
+
+  // Update UI feedback
+  if (btn) btn.disabled = true;
+  if (statusEl) {
+    statusEl.style.color = '#3b82f6';
+    statusEl.textContent = 'Updating cached resources...';
+  }
+
+  // Create a message channel to get a response back from the service worker
+  const messageChannel = new MessageChannel();
+
+  messageChannel.port1.onmessage = (event) => {
+    if (btn) btn.disabled = false;
+
+    if (event.data && event.data.status === 'SUCCESS') {
+      if (statusEl) {
+        statusEl.style.color = '#10b981';
+        statusEl.textContent = 'Updated! Reloading...';
+      }
+      
+      // Reload page to display fresh cached files
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } else {
+      if (statusEl) {
+        statusEl.style.color = '#ef4444';
+        statusEl.textContent = 'Update failed. Try again later.';
+      }
+    }
+  };
+
+  // Send message to Service Worker
+  navigator.serviceWorker.controller.postMessage(
+    { type: 'FORCE_UPDATE_CACHE' },
+    [messageChannel.port2]
+  );
+}
