@@ -23,5 +23,76 @@
     "id": "survival",
     "name": "Wilderness Survival",
     "description": "Proficiency in tracking beasts, foraging edible flora, and constructing temporary shelters."
+  },
+
+  {
+    "id": "battle-mage",
+    "name": "Battle Mage",
+    "description": "Get a +3 to any spell cast with Fight stat"
+  },
+  {
+    "id": "healer",
+    "name": "Healer",
+    "description": "Get a +3 to any spell cast with Grit stat"
+  },
+  {
+    "id": "assasin",
+    "name": "Assasin",
+    "description": "Spend an Adversity Token to make a strike a critical hit"
+  },
+  {
+    "id": "lucky",
+    "name": "Lucky",
+    "description": "Spend 2 Adversity Tokens to reroll a stat check"
+  },
+  {
+    "id": "cool-under-pressure",
+    "name": "Cool Under Pressure",
+    "description": "Spend 1 adversity token to take half of your die's value instead of rolling on a snap decision"
+  },
+  {
+    "id": "easygoing",
+    "name": "Easygoing",
+    "description": "Gain 2 adversity tokens when you fail instead of 1"
+  },
+  {
+    "id": "loyal",
+    "name": "Loyal",
+    "description": "Each Adversity Token you spend to help your friends give them +2 instead of +1"
+  },
+  {
+    "id": "intuitive",
+    "name": "Intuitive",
+    "description": "Spend 1 Adversity Token to ask the GM about your surroundings, an NPC or the like and the GM must answer honestly"
+  },
+  {
+    "id": "prepared",
+    "name": "Prepared",
+    "description": "Spend 2 Adversity Tokens to just happen to have a commonplace item with you"
+  },
+  {
+    "id": "quick-healing",
+    "name": "Quick Healing",
+    "description": "You recover from injuries more quickly and don't suffer lasting effects from most injuries"
+  },
+  {
+    "id": "treasure-hunter",
+    "name": "Treasure Hunter",
+    "description": "Spend 1 Adversity Token to find a useful item in your surroundings"
+  },
+  {
+    "id": "unassuming",
+    "name": "Unassuming",
+    "description": "Spend 2 Adversity Tokens to remain unseen within reason (GM discretion)"
+  },
+  {
+    "id": "resilient",
+    "name": "Resilient",
+    "description": "When spending AT to boost a check against a spell that targets you, each AT is worth +2 instead of +1."
+  },
+  {
+    "id": "wild-speak",
+    "name": "Wild Speak",
+    "description": "You can communicate with any animal whose species you have knowledge of."
   }
 ]

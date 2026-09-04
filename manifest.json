@@ -1,6 +1,6 @@
 {
-  "short_name": "TextSaver",
-  "name": "Offline Text Saver",
+  "short_name": "TTRPG",
+  "name": "TTRPG Manager",
   "icons": [
     {
       "src": "icon.png",
@@ -8,7 +8,7 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": "./",
   "background_color": "#121212",
   "theme_color": "#1a1a1a",
   "display": "standalone"

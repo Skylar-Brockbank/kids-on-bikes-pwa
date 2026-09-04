@@ -53,7 +53,7 @@ function renderRoster() {
 
 function viewCharacter(id) {
   localStorage.setItem('selectedCharacterId', id);
-  window.location.href = 'detail.html';
+  window.location.href = 'detail';
 }
 
 function deleteCharacter(id) {

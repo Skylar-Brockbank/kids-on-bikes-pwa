@@ -1,7 +1,7 @@
 [
   {
-    "id": "brute",
-    "name": "Brute",
+    "id": "Fighter",
+    "name": "Fighter",
     "description": "A frontline powerhouse who relies on raw physical strength and endurance.",
     "bonuses": {
       "brawn": 2,
@@ -9,8 +9,8 @@
     }
   },
   {
-    "id": "scout",
-    "name": "Scout",
+    "id": "Theif",
+    "name": "Theif",
     "description": "Quick-footed and observant, adept at evading traps and striking from afar.",
     "bonuses": {
       "flight": 2,
@@ -18,21 +18,22 @@
     }
   },
   {
-    "id": "diplomat",
-    "name": "Diplomat",
-    "description": "A silver-tongued negotiator capable of talking their way through tough spots.",
+    "id": "Bard",
+    "name": "Bard",
+    "description": "A silver-tongued performer capable of talking their way through tough spots.",
     "bonuses": {
       "charm": 2,
       "grit": 1
     }
   },
   {
-    "id": "scholar",
-    "name": "Scholar",
+    "id": "Wizard",
+    "name": "Wizard",
     "description": "Master of ancient knowledge and quick analysis in times of crisis.",
     "bonuses": {
       "brain": 2,
       "charm": 1
     }
   }
+
 ]
